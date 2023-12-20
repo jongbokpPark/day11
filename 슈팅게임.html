@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #wrapper {
+        width: 1280px;
+        height: 640px;
+        margin: 0 auto;
+        background: url("../images/amongas/universe.jpg") no-repeat;
+        background-size: cover;
+        position: relative;
+        overflow: hidden;
+      }
+    </style>
+    <script src="../lib/plane.js"></script>
+    <script src="../lib/bullet.js"></script>
+    <script src="../lib/Enemy.js"></script>
+    <script>
+      let wrapper;
+      let plane2; // 비행기의 인스턴스를 보관할 전역변수???
+      let bulletArray = []; // 총알 다수를 보관할 수 있는 전역
+      let enemyArray = []; // 몬스터 다수를 보관할 수 있는 전역
+
+      function gameLoop() {
+        // 비행기 move() 메서드를 끊임없이 호출하자
+        plane2.move();
+
+        for (let i = 0; i < bulletArray.length; i++) {
+          bulletArray[i].move();
+        }
+      }
+
+      function fire() {
+        let bullet = new Bullet(
+          wrapper,
+          plane2.x + plane2.width,
+          plane2.y + plane2.height / 5,
+          20,
+          20,
+          8,
+          0,
+          "white"
+        );
+
+        bulletArray.push(bullet);
+      }
+
+      function createEnemy() {
+        for (let i = 0; i < 4; i++) {
+          enemy = new Enemy(
+            wrapper,
+            "../images/amongas/character1.png",
+            1200,
+            i * 100,
+            75,
+            80,
+            -3,
+            0
+          );
+          enemyArray.push(enemy);
+        }
+        // 적군의 수 만큼 move 호출
+        for (let i = 0; i < enemyArray.length; i++) {
+          enemyArray[i].move();
+        }
+      }
+
+      addEventListener("load", function () {
+        wrapper = document.getElementById("wrapper");
+
+        plane2 = new plane(wrapper, 0, 100, 50, 50, 0, 0);
+
+        setInterval("gameLoop()", 10);
+
+        createEnemy();
+
+        document.body.addEventListener("keydown", function () {
+          switch (event.keyCode) {
+            case 37:
+              plane2.velX = -5;
+              break; // 좌
+            case 39:
+              plane2.velX = 5;
+              break; // 우
+            case 38:
+              plane2.velY = -5;
+              break; // 위
+            case 40:
+              plane2.velY = 5;
+              break; // 아래
+
+            case 32:
+              fire();
+              break;
+          }
+        });
+        document.body.addEventListener("keyup", function () {
+          switch (event.keyCode) {
+            case 37:
+              plane2.velX = 0;
+              break; // 좌
+            case 39:
+              plane2.velX = 0;
+              break; // 우
+            case 38:
+              plane2.velY = 0;
+              break; // 위
+            case 40:
+              plane2.velY = 0;
+              break; // 아래
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="wrapper"></div>
+  </body>
+</html>
