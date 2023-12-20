@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      #wrapper {
+        width: 100%;
+        height: 1000px;
+        background: navy;
+        position: relative;
+      }
+    </style>
+
+    <script src="../lib/common.js"></script>
+    <script>
+      let wrapper;
+      let box1;
+      let box2;
+
+      // 사각형읠 정의한다.
+      class Rect {
+        constructor(x, y, width, height, bg) {
+          this.div = document.createElement("div");
+          this.x = x;
+          this.y = y;
+          this.width = width;
+          this.height = height;
+          this.bg = bg;
+
+          // 스타일정의
+          this.div.style.position = "absolute";
+          this.div.style.left = this.x + "px";
+          this.div.style.top = this.y + "px";
+
+          this.div.style.width = this.width + "px";
+          this.div.style.height = this.height + "px";
+          this.div.style.background = this.bg;
+
+          wrapper.appendChild(this.div);
+
+          // 클릭이벤트
+        }
+        move() {
+          this.div.innerText = "x:" + this.x + "\n" + "y:" + this.y;
+          this.x = parseInt(event.clientX);
+          this.y = parseInt(event.clientY);
+
+          this.div.style.left = event.clientX + "px";
+          this.div.style.top = event.clientY + "px";
+        }
+      }
+
+      function createRect() {
+        box1 = new Rect(100, 400, 200, 200, "red");
+        box2 = new Rect(700, 400, 200, 200, "yellow");
+      }
+
+      addEventListener("load", function () {
+        wrapper = document.getElementById("wrapper");
+
+        // 두개의 사작형을 만들자
+        createRect();
+
+        document.body.addEventListener("mousemove", () => {
+          box1.move();
+          //   box2.move();
+          let result = collisionCheck(box1, box2);
+          console.log("충돌결과", result);
+          // 충돌시 초록색을 다시 횐색으로
+          if (result) {
+            box2.div.style.background = "white";
+          } else {
+            box2.div.style.background = "yellow";
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="wrapper"></div>
+  </body>
+</html>

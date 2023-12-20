@@ -15,6 +15,7 @@
         overflow: hidden;
       }
     </style>
+    <script src="../lib/common.js"></script>
     <script src="../lib/plane.js"></script>
     <script src="../lib/bullet.js"></script>
     <script src="../lib/Enemy.js"></script>
@@ -23,6 +24,12 @@
       let plane2; // 비행기의 인스턴스를 보관할 전역변수???
       let bulletArray = []; // 총알 다수를 보관할 수 있는 전역
       let enemyArray = []; // 몬스터 다수를 보관할 수 있는 전역
+      let enemySrc = [
+        "character1.png",
+        "character2.png",
+        "character3.png",
+        "character4.png",
+      ]; // 몬스터 다수를 보관할 수 있는 전역
 
       function gameLoop() {
         // 비행기 move() 메서드를 끊임없이 호출하자
@@ -30,6 +37,11 @@
 
         for (let i = 0; i < bulletArray.length; i++) {
           bulletArray[i].move();
+        }
+
+        // 적군의 수 만큼 move 호출
+        for (let i = 0; i < enemyArray.length; i++) {
+          enemyArray[i].move();
         }
       }
 
@@ -52,7 +64,7 @@
         for (let i = 0; i < 4; i++) {
           enemy = new Enemy(
             wrapper,
-            "../images/amongas/character1.png",
+            "../images/amongas/" + enemySrc[i],
             1200,
             i * 100,
             75,
@@ -61,10 +73,6 @@
             0
           );
           enemyArray.push(enemy);
-        }
-        // 적군의 수 만큼 move 호출
-        for (let i = 0; i < enemyArray.length; i++) {
-          enemyArray[i].move().asdas;
         }
       }
 
